@@ -6,17 +6,19 @@ using UnityEngine.UI;
 public class Podomerter : MonoBehaviour
 {
     public Text texto;
-
+    public GameObject energy;
 
 
     private float loLim = 0.005F;
     private float hiLim = 0.3F;
-    private int steps = 0;
+    public  int steps = 0;
     private bool stateH = false;
     private float fHigh = 8.0F;
     private float curAcc = 0F;
     private float fLow = 0.2F;
     private float avgAcc;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,4 +57,9 @@ public class Podomerter : MonoBehaviour
 
         return steps;
     }
+    public void Add_1000_steps()
+    {
+        steps += 1472;
+    }
+ 
 }

@@ -48,7 +48,7 @@ public class startCapture : MonoBehaviour
         {
             Instantiate(capturePointsPF, positions[i], Quaternion.identity);
             yield return new WaitForSeconds(1);
-
+            
         }
         stopCorroutines();
     }

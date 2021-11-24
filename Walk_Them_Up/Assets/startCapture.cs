@@ -6,6 +6,7 @@ public class startCapture : MonoBehaviour
 {
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
+    [SerializeField] GameObject myCanvas;
     public int tiempoEntreBolas = 1;
     public int numGenerated = 5;
     List<Vector3> positions = new List<Vector3>();
@@ -15,6 +16,12 @@ public class startCapture : MonoBehaviour
 
     int minValueZ = 3;
     int maxValueZ = 3;
+
+    //button
+    int minValueBX = 625;
+    int maxValueBX = 625;
+    int minValueBY = -1540;
+    int maxValueBY = 520;
     bool empezada = false;
 
     // Start is called before the first frame update
@@ -49,8 +56,9 @@ public class startCapture : MonoBehaviour
         
         for (int i = 0; i < numGenerated; i++)
         {
-            Instantiate(capturePointsPF, positions[i], Quaternion.identity);
-           
+            //Instantiate(capturePointsPF, positions[i], Quaternion.identity);
+            GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
+            newButton.transform.SetParent(myCanvas.transform, false);
             yield return new WaitForSeconds(1);
             
         }
@@ -68,17 +76,26 @@ public class startCapture : MonoBehaviour
     {
         List<Vector3> posiciones = new List<Vector3>();
         Vector3 aux;
-        
 
-        for(int i = 0; i < howManyPositions; i++)
+
+        //for(int i = 0; i < howManyPositions; i++)
+        //{
+        //    aux.x = Random.Range(Player.transform.position.x - minValueX, Player.transform.position.x + maxValueX);
+        //    aux.y = Player.transform.position.y;
+        //    aux.z = Random.Range(Player.transform.position.z - minValueZ, Player.transform.position.z + maxValueZ);
+
+        //    posiciones.Add(aux);
+        //}
+
+        for (int i = 0; i < howManyPositions; i++)
         {
-            aux.x = Random.Range(Player.transform.position.x - minValueX, Player.transform.position.x + maxValueX);
-            aux.y = Player.transform.position.y;
-            aux.z = Random.Range(Player.transform.position.z - minValueZ, Player.transform.position.z + maxValueZ);
+            aux.x = Random.Range(minValueBX, maxValueBX);
+            aux.y = Random.Range(minValueBY, maxValueBY);
+            aux.z = 0;
 
             posiciones.Add(aux);
         }
-        
+
         return posiciones;
     }
 }

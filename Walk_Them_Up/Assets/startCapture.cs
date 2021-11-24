@@ -18,7 +18,7 @@ public class startCapture : MonoBehaviour
     int maxValueZ = 3;
 
     //button
-    int minValueBX = 625;
+    int minValueBX = -625;
     int maxValueBX = 625;
     int minValueBY = -1540;
     int maxValueBY = 520;

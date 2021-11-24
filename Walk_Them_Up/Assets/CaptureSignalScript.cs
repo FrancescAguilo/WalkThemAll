@@ -39,6 +39,7 @@ public class CaptureSignalScript : MonoBehaviour
     IEnumerator timerEasy()
     {
         yield return new WaitForSeconds(2);
+        Debug.Log("Deberia borrarme ahora padre");
         byeFunction();
     }
 
@@ -59,7 +60,7 @@ public class CaptureSignalScript : MonoBehaviour
         StopCoroutine("timerEasy");
         StopCoroutine("timerMed");
         StopCoroutine("timerHard");
-        Destroy(this, 0.1f);
+        Destroy(this.gameObject, 0.1f);
     }
 
 }

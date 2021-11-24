@@ -8,7 +8,7 @@ public class startCapture : MonoBehaviour
     [SerializeField] GameObject Player;
     public int tiempoEntreBolas = 1;
     public int numGenerated = 5;
-    List<Vector3> positions;
+    List<Vector3> positions = new List<Vector3>();
 
     int minValue = 5;
     int maxValue = 5;
@@ -17,7 +17,7 @@ public class startCapture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        List<Vector3> positions = new List<Vector3>();
+       
         positions = generatePositions(numGenerated);
         Debug.Log("1");
 
@@ -47,6 +47,7 @@ public class startCapture : MonoBehaviour
         for (int i = 0; i < numGenerated; i++)
         {
             Instantiate(capturePointsPF, positions[i], Quaternion.identity);
+            //Instantiate(capturePointsPF, new Vector3(600,1000,0), Quaternion.identity);
             yield return new WaitForSeconds(1);
             
         }
@@ -74,7 +75,7 @@ public class startCapture : MonoBehaviour
 
             posiciones.Add(aux);
         }
-
+        
         return posiciones;
     }
 }

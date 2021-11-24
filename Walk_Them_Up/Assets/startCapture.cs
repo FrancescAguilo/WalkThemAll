@@ -10,8 +10,11 @@ public class startCapture : MonoBehaviour
     public int numGenerated = 5;
     List<Vector3> positions = new List<Vector3>();
 
-    int minValue = 5;
-    int maxValue = 5;
+    int minValueX = 5;
+    int maxValueX = 5;
+
+    int minValueZ = 3;
+    int maxValueZ = 3;
     bool empezada = false;
 
     // Start is called before the first frame update
@@ -47,7 +50,7 @@ public class startCapture : MonoBehaviour
         for (int i = 0; i < numGenerated; i++)
         {
             Instantiate(capturePointsPF, positions[i], Quaternion.identity);
-            //Instantiate(capturePointsPF, new Vector3(600,1000,0), Quaternion.identity);
+           
             yield return new WaitForSeconds(1);
             
         }
@@ -69,9 +72,9 @@ public class startCapture : MonoBehaviour
 
         for(int i = 0; i < howManyPositions; i++)
         {
-            aux.x = Random.Range(Player.transform.position.x - minValue, Player.transform.position.x + maxValue);
+            aux.x = Random.Range(Player.transform.position.x - minValueX, Player.transform.position.x + maxValueX);
             aux.y = Player.transform.position.y;
-            aux.z = Random.Range(Player.transform.position.z - minValue, Player.transform.position.z + maxValue);
+            aux.z = Random.Range(Player.transform.position.z - minValueZ, Player.transform.position.z + maxValueZ);
 
             posiciones.Add(aux);
         }

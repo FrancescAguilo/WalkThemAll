@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+
 
 public class startCapture : MonoBehaviour
 {
@@ -57,19 +59,39 @@ public class startCapture : MonoBehaviour
         
         for (int i = 0; i < numGenerated; i++)
         {
+        
             //Instantiate(capturePointsPF, positions[i], Quaternion.identity);
             GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
             int aux = i + 1;
             newButton.GetComponentInChildren<Text>().text = aux.ToString();          
-
-            //Text aux = newButton.GetComponentInChildren<Text>();
           
             newButton.transform.SetParent(myCanvas.transform, false);
+
+            if (i < numGenerated - 1)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(positions[i], positions[i + 1]);
+
+                //Color c1 = Color.yellow;
+                //LineRenderer lineRenderer = new LineRenderer();
+                //lineRenderer.SetPosition(positions[i], positions[i + 1]);
+
+                //Debug.DrawRay(positions[i], positions[i + 1], Color.yellow, 2);
+
+                //LineRenderer lineRenderer = newButton.GetComponent<LineRenderer>();
+                //lineRenderer.SetPosition(i, positions[i]);
+                //lineRenderer.SetPosition(i, new Vector3(positions[i + 1].x, positions[i + 1].y, positions[i + 1].z));
+
+                //Handles.DrawLine(positions[i], positions[i + 1]);
+            }
             yield return new WaitForSeconds(1);
             
         }
         stopCorroutines();
     }
+
+
+
 
     public void stopCorroutines()
     {

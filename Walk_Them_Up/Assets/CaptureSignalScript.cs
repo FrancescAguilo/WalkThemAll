@@ -8,6 +8,8 @@ public class CaptureSignalScript : MonoBehaviour
 
     [SerializeField] difficulty dificultad;
 
+    
+
     private void Awake()
     {
         if (dificultad == difficulty.EASY)

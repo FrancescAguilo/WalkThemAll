@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class startCapture : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class startCapture : MonoBehaviour
     {
        
         positions = generatePositions(numGenerated);
-        Debug.Log("1");
+        //Debug.Log("1");
 
     }
 
@@ -42,7 +43,7 @@ public class startCapture : MonoBehaviour
             //spawnear 5 con 1 seg de delay
             if (!empezada)
             {
-                Debug.Log("2");
+                //Debug.Log("2");
                 StartCoroutine("generateCapturePoints");
             }
         }
@@ -58,6 +59,11 @@ public class startCapture : MonoBehaviour
         {
             //Instantiate(capturePointsPF, positions[i], Quaternion.identity);
             GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
+            int aux = i + 1;
+            newButton.GetComponentInChildren<Text>().text = aux.ToString();          
+
+            //Text aux = newButton.GetComponentInChildren<Text>();
+          
             newButton.transform.SetParent(myCanvas.transform, false);
             yield return new WaitForSeconds(1);
             

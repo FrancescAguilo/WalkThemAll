@@ -20,6 +20,8 @@ public class startCapture : MonoBehaviour
     int minValueZ = 3;
     int maxValueZ = 3;
 
+    bool gizmo = false;
+
     //button
     int minValueBX = -625;
     int maxValueBX = 625;
@@ -69,8 +71,9 @@ public class startCapture : MonoBehaviour
 
             if (i < numGenerated - 1)
             {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(positions[i], positions[i + 1]);
+                gizmo = true;
+                //Gizmos.color = Color.yellow;
+                //Gizmos.DrawLine(positions[i], positions[i + 1]);
 
                 //Color c1 = Color.yellow;
                 //LineRenderer lineRenderer = new LineRenderer();
@@ -84,6 +87,10 @@ public class startCapture : MonoBehaviour
 
                 //Handles.DrawLine(positions[i], positions[i + 1]);
             }
+            else
+            {
+                gizmo = false;
+            }
             yield return new WaitForSeconds(1);
             
         }
@@ -91,7 +98,15 @@ public class startCapture : MonoBehaviour
     }
 
 
-
+    void OnDrawGizmos()
+    {
+        if (gizmo)
+        {
+                
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(positions[1], positions[0]);
+        }
+    }
 
     public void stopCorroutines()
     {

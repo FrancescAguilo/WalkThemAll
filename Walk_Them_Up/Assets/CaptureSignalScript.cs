@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CaptureSignalScript : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class CaptureSignalScript : MonoBehaviour
 
     [SerializeField] difficulty dificultad;
 
+    [SerializeField] Button btn;
+    [SerializeField] ParticleSystem ps;
     
 
     private void Awake()
     {
+        ps.Stop();
+
         if (dificultad == difficulty.EASY)
         {
             StartCoroutine("timerEasy");
@@ -29,7 +34,7 @@ public class CaptureSignalScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        btn.onClick.AddListener(TaskOnClick);
     }
 
     // Update is called once per frame
@@ -38,31 +43,37 @@ public class CaptureSignalScript : MonoBehaviour
         
     }
 
+    void TaskOnClick()
+    {
+        ps.Play();
+        byeFunction(0.1f);
+    }
+
     IEnumerator timerEasy()
     {
         yield return new WaitForSeconds(2);
         Debug.Log("Deberia borrarme ahora padre");
-        byeFunction();
+        byeFunction(0.1f);
     }
 
     IEnumerator timerMed()
     {
         yield return new WaitForSeconds(1);
-        byeFunction();
+        byeFunction(0.1f);
     }
 
     IEnumerator timerHard()
     {
         yield return new WaitForSeconds(0.5f);
-        byeFunction();
+        byeFunction(0.1f);
     }
 
-    public void byeFunction()
+    public void byeFunction(float time)
     {
         StopCoroutine("timerEasy");
         StopCoroutine("timerMed");
         StopCoroutine("timerHard");
-        Destroy(this.gameObject, 0.1f);
+        Destroy(this.gameObject, time);
     }
 
 }

@@ -52,7 +52,7 @@ public class CaptureSignalScript : MonoBehaviour
     IEnumerator timerEasy()
     {
         yield return new WaitForSeconds(2);
-        Debug.Log("Deberia borrarme ahora padre");
+        //Debug.Log("Deberia borrarme ahora padre");
         byeFunction(0.1f);
     }
 

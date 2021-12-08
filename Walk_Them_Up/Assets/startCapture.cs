@@ -21,6 +21,7 @@ public class startCapture : MonoBehaviour
     int maxValueZ = 3;
 
     bool gizmo = false;
+    bool fin = true;
 
     //button
     int minValueBX = -625;
@@ -28,6 +29,7 @@ public class startCapture : MonoBehaviour
     int minValueBY = -1540;
     int maxValueBY = 520;
     bool empezada = false;
+    bool empezada2 = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,20 +47,44 @@ public class startCapture : MonoBehaviour
         if (true)
         {
             //spawnear 5 con 1 seg de delay
-            if (!empezada)
+           
+            
+            if (!empezada2)
             {
+
                 //Debug.Log("2");
-                StartCoroutine("generateCapturePoints");
+                StartCoroutine("generatorManager");
+                
             }
+            
         }
      
+    }
+
+    IEnumerator generatorManager()
+    {
+        empezada2 = true;
+        int i = 0;
+        while(i < 5)
+        {
+            if (!empezada)
+            {
+                Debug.Log("soy la rutina " + i);
+                StartCoroutine("generateCapturePoints");
+                yield return new WaitForSeconds(6);
+                i++;
+                positions = generatePositions(numGenerated);
+            }
+            Debug.Log("ahora espero a que " + i + " acabe");
+        }
+        //stopCorroutines();
     }
 
 
     IEnumerator generateCapturePoints()
     {
-        empezada = true;
         
+
         for (int i = 0; i < numGenerated; i++)
         {
         
@@ -94,6 +120,9 @@ public class startCapture : MonoBehaviour
             yield return new WaitForSeconds(1);
             
         }
+
+        empezada = true;
+        fin = false;
         stopCorroutines();
     }
 
@@ -111,7 +140,9 @@ public class startCapture : MonoBehaviour
     public void stopCorroutines()
     {
         StopCoroutine("generateCapturePoints");
-        //igual poner a false empezada o algo ya se vera
+        fin = true;
+        empezada = false;
+        
     }
 
     //Generamos todas las posiciones donde se crearan las bolas

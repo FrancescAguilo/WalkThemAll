@@ -16,6 +16,7 @@ public class startCapture : MonoBehaviour
     public int numGenerated = 5;
     List<Vector3> positions = new List<Vector3>();
     public Type[] enemyForm;
+    SortedDictionary<int, List<Vector3>> pointsPositions = new SortedDictionary<int, List<Vector3>>();
 
     int minValueX = 5;
     int maxValueX = 5;
@@ -43,8 +44,9 @@ public class startCapture : MonoBehaviour
     void Start()
     {
 
-        positions = generatePositions(numGenerated);
+        //positions = generatePositions(numGenerated);
         //Debug.Log("1");
+        pointsPositions = generateGeometricPositions();
 
     }
 
@@ -81,7 +83,8 @@ public class startCapture : MonoBehaviour
                 StartCoroutine("generateCapturePoints");
                 yield return new WaitForSeconds(6);
                 i++;
-                positions = generatePositions(numGenerated);
+                //positions = generatePositions(numGenerated);
+                pointsPositions = generateGeometricPositions();
             }
             Debug.Log("ahora espero a que " + i + " acabe");
         }
@@ -91,42 +94,25 @@ public class startCapture : MonoBehaviour
 
     IEnumerator generateCapturePoints()
     {
+        
 
-
-        for (int i = 0; i < numGenerated; i++)
+        for (int i = 0; i < 4; i++)
         {
 
-            //Instantiate(capturePointsPF, positions[i], Quaternion.identity);
-            GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
-            int aux = i + 1;
-            newButton.GetComponentInChildren<Text>().text = aux.ToString();
-
-            newButton.transform.SetParent(myCanvas.transform, false);
-
-            if (i < numGenerated - 1)
+            int aux = i;
+            //GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
+            for (int j = 0; j < pointsPositions[i].Count; j++)
             {
-                gizmo = true;
-                //Gizmos.color = Color.yellow;
-                //Gizmos.DrawLine(positions[i], positions[i + 1]);
+                GameObject newButton = Instantiate(capturePointsPF, pointsPositions[i][j], Quaternion.identity) as GameObject;
+                aux = i + 1 + j;
+                newButton.GetComponentInChildren<Text>().text = aux.ToString();
+                
+                newButton.transform.SetParent(myCanvas.transform, false);
 
-                //Color c1 = Color.yellow;
-                //LineRenderer lineRenderer = new LineRenderer();
-                //lineRenderer.SetPosition(positions[i], positions[i + 1]);
-
-                //Debug.DrawRay(positions[i], positions[i + 1], Color.yellow, 2);
-
-                //LineRenderer lineRenderer = newButton.GetComponent<LineRenderer>();
-                //lineRenderer.SetPosition(i, positions[i]);
-                //lineRenderer.SetPosition(i, new Vector3(positions[i + 1].x, positions[i + 1].y, positions[i + 1].z));
-
-                //Handles.DrawLine(positions[i], positions[i + 1]);
+           
             }
-            else
-            {
-                gizmo = false;
-            }
-            yield return new WaitForSeconds(1);
-
+            yield return new WaitForSeconds(10);
+            
         }
 
         empezada = true;
@@ -134,16 +120,7 @@ public class startCapture : MonoBehaviour
         stopCorroutines();
     }
 
-
-    void OnDrawGizmos()
-    {
-        if (gizmo)
-        {
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(positions[1], positions[0]);
-        }
-    }
+    
 
     public void stopCorroutines()
     {

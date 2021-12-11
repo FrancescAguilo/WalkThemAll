@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b43c722233198d4a89a334177f17b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dificultad: 0
+  dificultad: 1
   btn: {fileID: 126677384688167628}
   ps: {fileID: 6675121565274774155}
 --- !u!1001 &6675121565294539705

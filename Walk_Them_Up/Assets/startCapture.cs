@@ -35,10 +35,13 @@ public class startCapture : MonoBehaviour
     bool empezada = false;
     bool empezada2 = false;
 
-    //geometry
-
+    //geometry basic ranges
+    //triangle
     int tMX = 500; //triangleMagnitude on X 
     int tMY = 500; //triangleMagnitude on Y
+    //square
+    int sM = 800; //squareMagnitude
+
 
     // Start is called before the first frame update
     void Start()
@@ -101,8 +104,11 @@ public class startCapture : MonoBehaviour
             //Debug.Log("ahora empiezo: " + pointsPositions[i].Count);
             int aux = i;
             //GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
-            //for (int j = 0; j < pointsPositions[i].Count; j++)
-            for (int j = 0; j < 3; j++)
+            //List<Vector3> count = pointsPositions[i];
+            
+            for (int j = 0; j < pointsPositions[i].Count; j++)
+            //for (int j = 0; j < count.Count; j++)
+            //for (int j = 0; j < 4; j++)
             {
                 GameObject newButton = Instantiate(capturePointsPF, pointsPositions[i][j], Quaternion.identity) as GameObject;
                 aux = i + 1 + j;
@@ -112,7 +118,7 @@ public class startCapture : MonoBehaviour
 
            
             }
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
             //Debug.Log("Ahora Espero 10 secs");
         }
 
@@ -159,10 +165,10 @@ public class startCapture : MonoBehaviour
         return posiciones;
     }
 
-    public Vector3 generateRandomCenter()
+    public Vector3 generateRandomPoint(Vector2 aprox_vX, Vector2 aprox_vY)
     {
         //return new Vector3(Random.Range(-250, 50), Random.Range(-390, 90), 0);
-        return new Vector3(Random.Range(-50, 50), Random.Range(-390, -90), 0);
+        return new Vector3(Random.Range(aprox_vX.x, aprox_vX.y), Random.Range(aprox_vY.x, aprox_vY.y), 0);
 
     }
 
@@ -179,12 +185,14 @@ public class startCapture : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
+            specificPositions.Clear();
             if (enemyForm[i] == Type.TRIANGULO)
             {
                 int auxDistX = Random.Range(tMX - 300, tMX + 300);
                 int auxDistY = Random.Range(tMY - 600, tMY + 100);
+
                 //generate triangle center
-                Vector3 center = generateRandomCenter();
+                Vector3 center = generateRandomPoint(new Vector2(-50,50),new Vector2(-390,-90));
 
                 //generate triangle vertex 1(up)
                 aux = new Vector3(0, auxDistX, 0);
@@ -198,15 +206,29 @@ public class startCapture : MonoBehaviour
                 aux = new Vector3(auxDistX, -(2 / 3) * auxDistY, 0);
                 specificPositions.Add(center + aux);
 
+
                 //push it on the map
                 generalPositions.Add(i, specificPositions);
+                //clear aux stuff
+                //specificPositions.Clear();
             }
             else if (enemyForm[i] == Type.CUADRADO)
             {
-                for (int j = 0; j < (int)enemyForm[i]; j++)
-                {
+                int randomDistance = Random.Range(sM - 200, sM + 200);
+                //generate vertex 1 (up left corner)
+                aux = generateRandomPoint(new Vector2(-600, 300 - randomDistance), new Vector2(-1100 + randomDistance, 200 - randomDistance));//- and + random distance to kow it would fit on the screen
+                specificPositions.Add(aux);
 
-                }
+                //generate next 3 vertex
+                specificPositions.Add(aux + new Vector3(randomDistance, 0, 0));  // up right corner
+                specificPositions.Add(aux + new Vector3(0, -randomDistance, 0)); // down left corner
+                specificPositions.Add(aux + new Vector3(randomDistance, -randomDistance, 0)); // down right corner
+
+                //push it on the map
+                generalPositions.Add(i, specificPositions);
+                //clear aux stuff
+                //specificPositions.Clear();
+
             }
             else if (enemyForm[i] == Type.PENTAGONO)
             {

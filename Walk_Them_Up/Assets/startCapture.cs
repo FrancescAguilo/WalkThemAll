@@ -7,12 +7,15 @@ using UnityEditor;
 
 public class startCapture : MonoBehaviour
 {
+    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 6 };
+
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject myCanvas;
     public int tiempoEntreBolas = 1;
     public int numGenerated = 5;
     List<Vector3> positions = new List<Vector3>();
+    public Type[] enemyForm;
 
     int minValueX = 5;
     int maxValueX = 5;
@@ -31,10 +34,15 @@ public class startCapture : MonoBehaviour
     bool empezada = false;
     bool empezada2 = false;
 
+    //geometry
+
+    int tMX = 20; //triangleMagnitude on X 
+    int tMY = 20; //triangleMagnitude on Y
+
     // Start is called before the first frame update
     void Start()
     {
-       
+
         positions = generatePositions(numGenerated);
         //Debug.Log("1");
 
@@ -47,25 +55,25 @@ public class startCapture : MonoBehaviour
         if (true)
         {
             //spawnear 5 con 1 seg de delay
-           
-            
+
+
             if (!empezada2)
             {
 
                 //Debug.Log("2");
                 StartCoroutine("generatorManager");
-                
+
             }
-            
+
         }
-     
+
     }
 
     IEnumerator generatorManager()
     {
         empezada2 = true;
         int i = 0;
-        while(i < 5)
+        while (i < 5)
         {
             if (!empezada)
             {
@@ -83,16 +91,16 @@ public class startCapture : MonoBehaviour
 
     IEnumerator generateCapturePoints()
     {
-        
+
 
         for (int i = 0; i < numGenerated; i++)
         {
-        
+
             //Instantiate(capturePointsPF, positions[i], Quaternion.identity);
             GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
             int aux = i + 1;
-            newButton.GetComponentInChildren<Text>().text = aux.ToString();          
-          
+            newButton.GetComponentInChildren<Text>().text = aux.ToString();
+
             newButton.transform.SetParent(myCanvas.transform, false);
 
             if (i < numGenerated - 1)
@@ -118,7 +126,7 @@ public class startCapture : MonoBehaviour
                 gizmo = false;
             }
             yield return new WaitForSeconds(1);
-            
+
         }
 
         empezada = true;
@@ -131,7 +139,7 @@ public class startCapture : MonoBehaviour
     {
         if (gizmo)
         {
-                
+
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(positions[1], positions[0]);
         }
@@ -142,7 +150,7 @@ public class startCapture : MonoBehaviour
         StopCoroutine("generateCapturePoints");
         fin = true;
         empezada = false;
-        
+
     }
 
     //Generamos todas las posiciones donde se crearan las bolas
@@ -171,5 +179,75 @@ public class startCapture : MonoBehaviour
         }
 
         return posiciones;
+    }
+
+    public Vector3 generateRandomCenter()
+    {
+        return new Vector3(Random.Range(-50, 50), Random.Range(-70, 70), 0);
+
+    }
+
+    public SortedDictionary<int, List<Vector3>> generateGeometricPositions()
+    {
+        int nPoints = (int)enemyForm[0] + (int)enemyForm[1] + (int)enemyForm[2] + (int)enemyForm[3];
+
+
+
+        SortedDictionary<int, List<Vector3>> generalPositions = new SortedDictionary<int, List<Vector3>>();
+        List<Vector3> specificPositions = new List<Vector3>();
+        Vector3 aux;
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (enemyForm[i] == Type.TRIANGULO)
+            {
+                //generate triangle center
+                Vector3 center = generateRandomCenter();
+
+                //generate triangle vertex 1(up)
+                aux = new Vector3(0, tMX, 0);
+                specificPositions.Add(center + aux);
+
+                //generate triangle vertex 2(left)
+                aux = new Vector3(-tMX, -(2 / 3) * tMY, 0);
+                specificPositions.Add(center + aux);
+
+                //generate triangle vertex 3(right)
+                aux = new Vector3(tMX, -(2 / 3) * tMY, 0);
+                specificPositions.Add(center + aux);
+
+                //push it on the map
+                generalPositions.Add(i, specificPositions);
+            }
+            else if (enemyForm[i] == Type.CUADRADO)
+            {
+                for (int j = 0; j < (int)enemyForm[i]; j++)
+                {
+
+                }
+            }
+            else if (enemyForm[i] == Type.PENTAGONO)
+            {
+                for (int j = 0; j < (int)enemyForm[i]; j++)
+                {
+
+                }
+            }
+            else if (enemyForm[i] == Type.CIRCULO)
+            {
+                for (int j = 0; j < (int)enemyForm[i]; j++)
+                {
+
+                }
+            }
+            else
+            {
+                Debug.LogError("Falta poner el tipo de enemigo en startCapture.cs del enemigo");
+            }
+
+        }
+
+        return generalPositions;
     }
 }

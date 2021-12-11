@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CaptureSignalScript : MonoBehaviour
 {
     enum difficulty {EASY, MEDIUM,HARD};
+  
 
     [SerializeField] difficulty dificultad;
 

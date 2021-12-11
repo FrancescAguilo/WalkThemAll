@@ -7,12 +7,15 @@ using UnityEditor;
 
 public class startCapture : MonoBehaviour
 {
+    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 6 };
+
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject myCanvas;
     public int tiempoEntreBolas = 1;
     public int numGenerated = 5;
     List<Vector3> positions = new List<Vector3>();
+    public Type[] enemyForm;
 
     int minValueX = 5;
     int maxValueX = 5;
@@ -30,6 +33,11 @@ public class startCapture : MonoBehaviour
     int maxValueBY = 520;
     bool empezada = false;
     bool empezada2 = false;
+
+    //geometry
+
+    int tMX = 20; //triangleMagnitude on X 
+    int tMY = 20; //triangleMagnitude on Y
 
     // Start is called before the first frame update
     void Start()
@@ -171,5 +179,82 @@ public class startCapture : MonoBehaviour
         }
 
         return posiciones;
+    }
+
+    public Vector3 generateRandomCenter()
+    {
+        return new Vector3(Random.Range(-50, 50), Random.Range(-70, 70), 0);
+
+    }
+
+    public SortedDictionary<int, List<Vector3>> generateGeometricPositions()
+    {
+        int nPoints = (int)enemyForm[0] + (int)enemyForm[1] + (int)enemyForm[2] + (int)enemyForm[3];
+
+
+       
+        SortedDictionary<int, List<Vector3>> generalPositions = new SortedDictionary<int, List<Vector3>>();
+        List<Vector3> specificPositions = new List<Vector3>();
+        Vector3 aux;
+        
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (enemyForm[i] == Type.TRIANGULO)
+            {
+                //generate triangle center
+                Vector3 center = generateRandomCenter();
+
+                //generate triangle vertex 1(up)
+                aux = new Vector3(0, tMX, 0);
+                specificPositions.Add(center + aux);
+
+                //generate triangle vertex 2(left)
+                aux = new Vector3(-tMX, -(2 / 3) * tMY, 0);
+                specificPositions.Add(center + aux);
+
+                //generate triangle vertex 3(right)
+                aux = new Vector3(tMX, -(2 / 3) * tMY, 0);
+                specificPositions.Add(center + aux);
+
+                //push it on the map
+                generalPositions.Add(i, specificPositions);
+            }
+            else if (enemyForm[i] == Type.CUADRADO)
+            {
+                for (int j = 0; j < (int)enemyForm[i]; j++)
+                {
+
+                }
+            }
+            else if (enemyForm[i] == Type.PENTAGONO)
+            {
+                for (int j = 0; j < (int)enemyForm[i]; j++)
+                {
+
+                }
+            }
+            else if (enemyForm[i] == Type.CIRCULO)
+            {
+                for(int j = 0; j < (int)enemyForm[i]; j++)
+                {
+
+                }
+            }
+            else
+            {
+                Debug.LogError("Falta poner el tipo de enemigo en startCapture.cs del enemigo");
+            }
+
+
+
+            //aux.x = Random.Range(minValueBX, maxValueBX);
+            //aux.y = Random.Range(minValueBY, maxValueBY);
+            //aux.z = 0;
+
+            //posiciones.Add(aux);
+        }
+
+        return generalPositions;
     }
 }

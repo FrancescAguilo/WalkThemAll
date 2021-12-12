@@ -52,10 +52,13 @@ public class startCapture : MonoBehaviour
     [Header("Cuadrado:")]
     [Tooltip("Magnitud de lado")]
     public int sM = 800; //squareMagnitude
+
     //circle
     [Header("Circulo:")]
     [Tooltip("Radio del circulo")]
     public int radius = 500;
+    [Tooltip("Variacion maxima que se suma/resta al radio del circulo")]
+    public int randomVariation = 200;
 
 
     // Start is called before the first frame update
@@ -249,7 +252,7 @@ public class startCapture : MonoBehaviour
             }
             else if (enemyForm[i] == Type.CIRCULO)
             {
-                int randomRadius = Random.Range(radius - 200, radius + 200);
+                int randomRadius = Random.Range(radius - randomVariation, radius + randomVariation);
 
                 //generate the 4 basic vertex (up, down, right, left)
                 specificPositions.Add(new Vector3(randomRadius, 0, 0));

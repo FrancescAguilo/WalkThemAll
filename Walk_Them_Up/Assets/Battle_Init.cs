@@ -12,6 +12,7 @@ public class Battle_Init : MonoBehaviour
         if (other.CompareTag("Enemy_1")|| other.CompareTag("Enemy_2"))
         {
             start_Combat.SetActive(true);
+            other.GetComponent<Enemy_type_1>().detected = true;
         }
     }
 }

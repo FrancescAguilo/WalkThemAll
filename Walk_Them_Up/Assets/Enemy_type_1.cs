@@ -12,6 +12,7 @@ public class Enemy_type_1 : MonoBehaviour
     public ParticleSystem particleSystem;
     private Transform player;
     private NavMeshAgent ai;
+    public bool detected = false;
 
     private float timer;
     void Start()
@@ -25,38 +26,46 @@ public class Enemy_type_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(this.transform.position ,player.position) <20 ) {
-            switch (type)
-            {
-                case EnemyType.Enemy1:
-
-                    Vector3 dir = transform.position - player.position;
-                    Vector3 newPos = transform.position + dir;
-                    ai.SetDestination(newPos);
-
-                    break;
-
-                case EnemyType.Enemy2:
-                   
-                    ai.SetDestination(transform.position);
-                    break;
-                case EnemyType.Enemy3:
-
-                    break;
-            }
-        }
-
-        if (timer < 0)
+        if (!detected)
         {
-            Destroy(gameObject);
+            if (Vector3.Distance(this.transform.position, player.position) < 20)
+            {
+                switch (type)
+                {
+                    case EnemyType.Enemy1:
+
+                        Vector3 dir = transform.position - player.position;
+                        Vector3 newPos = transform.position + dir;
+                        ai.SetDestination(newPos);
+
+                        break;
+
+                    case EnemyType.Enemy2:
+
+                        ai.SetDestination(transform.position);
+                        break;
+                    case EnemyType.Enemy3:
+
+                        break;
+                }
+            }
+
+            if (timer < 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                timer -= Time.deltaTime;
+            }
+
+
+
+
         }
         else
         {
-            timer -= Time.deltaTime;
+            Destroy(this.gameObject, 0.25f);
         }
-
-
-
-
     }
 }

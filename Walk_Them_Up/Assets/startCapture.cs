@@ -7,7 +7,7 @@ using UnityEditor;
 
 public class startCapture : MonoBehaviour
 {
-    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 6 };
+    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 8 };
 
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
@@ -47,6 +47,9 @@ public class startCapture : MonoBehaviour
     int tMY = 500; //triangleMagnitude on Y
     //square
     int sM = 800; //squareMagnitude
+
+    //circle
+    int radius = 500;
 
 
     // Start is called before the first frame update
@@ -236,17 +239,25 @@ public class startCapture : MonoBehaviour
             }
             else if (enemyForm[i] == Type.PENTAGONO)
             {
-                for (int j = 0; j < (int)enemyForm[i]; j++)
-                {
-
-                }
+                
             }
             else if (enemyForm[i] == Type.CIRCULO)
             {
-                for (int j = 0; j < (int)enemyForm[i]; j++)
-                {
+                int randomRadius = Random.Range(radius - 200, radius + 200);
 
-                }
+                //generate the 4 basic vertex (up, down, right, left)
+                specificPositions.Add(new Vector3(randomRadius, 0, 0));
+                specificPositions.Add(new Vector3(-randomRadius, 0, 0));
+                specificPositions.Add(new Vector3(0, randomRadius, 0));
+                specificPositions.Add(new Vector3(0, -randomRadius, 0));
+
+                //generate the 4 45º vertex
+                specificPositions.Add(new Vector3(randomRadius * Mathf.Sin(45), randomRadius * Mathf.Cos(45), 0));
+                specificPositions.Add(new Vector3((randomRadius * Mathf.Sin(45))*(-1), randomRadius * Mathf.Cos(45), 0));
+                specificPositions.Add(new Vector3(randomRadius * Mathf.Sin(45), (randomRadius * Mathf.Cos(45))*(-1), 0));
+                specificPositions.Add(new Vector3((randomRadius * Mathf.Sin(45))*(-1), (randomRadius * Mathf.Cos(45))*(-1), 0));
+
+                generalPositions.Add(i, specificPositions);
             }
             else
             {

@@ -2173,6 +2173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   start_Combat: {fileID: 1764043682}
+  Combate: {fileID: 1289616086}
 --- !u!135 &549180108
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6118,9 +6119,8 @@ MonoBehaviour:
     type: 3}
   Player: {fileID: 549180100}
   myCanvas: {fileID: 1979172025}
-  tiempoEntreBolas: 1
-  numGenerated: 5
   enemyForm: 03000000040000000800000008000000
+  enemyFormINT: 
   tMX: 500
   tMY: 500
   sM: 800

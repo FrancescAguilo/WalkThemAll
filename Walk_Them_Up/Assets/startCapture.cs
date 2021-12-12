@@ -7,7 +7,7 @@ using UnityEditor;
 
 public class startCapture : MonoBehaviour
 {
-    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 8 };
+    public enum Type { TRIANGULO = 0, CUADRADO = 1, PENTAGONO = 2, CIRCULO = 3 };
 
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
@@ -18,6 +18,7 @@ public class startCapture : MonoBehaviour
     List<Vector3> positions = new List<Vector3>();
     
     public Type[] enemyForm;
+    public int[] enemyFormINT;
     //public List<Type> enemyForm = new List<Type>();
     //List<Type> enemyForm = new List<Type>();
     //Type[] enemyForm;
@@ -64,7 +65,7 @@ public class startCapture : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        enemyForm = intTypeConversor();
         //positions = generatePositions(numGenerated);
         //Debug.Log("1");
         pointsPositions = generateGeometricPositions();
@@ -88,6 +89,35 @@ public class startCapture : MonoBehaviour
         
 
     }
+
+    public Type[] intTypeConversor()
+    {
+        Type[] aux = new Type[4];
+        for(int i = 0; i < 4; i++)
+        {
+            if(enemyFormINT[i] == 0)
+            {
+                aux[i] = Type.TRIANGULO;
+            }
+            else if (enemyFormINT[i] == 1)
+            {
+                aux[i] = Type.CUADRADO;
+            }
+            else if(enemyFormINT[i] == 2)
+            {
+                aux[i] = Type.PENTAGONO;
+            }
+            else if(enemyFormINT[i] == 3)
+            {
+                aux[i] = Type.CIRCULO;
+            }
+            else{
+                Debug.LogError("La conversion entre int y Type peta");
+            }
+        }
+        return aux;
+    }
+
 
     //IEnumerator generatorManager()
     //{

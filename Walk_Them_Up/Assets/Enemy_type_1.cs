@@ -7,6 +7,8 @@ public class Enemy_type_1 : MonoBehaviour
 {
     // Start is called before the first frame update
     public enum EnemyType {Enemy1,Enemy2,Enemy3 };
+   
+    public int[] enemyForm;
 
     public EnemyType type;
     public ParticleSystem particleSystem;
@@ -17,6 +19,7 @@ public class Enemy_type_1 : MonoBehaviour
     private float timer;
     void Start()
     {
+        enemyForm = GenerateEnemyType();
         particleSystem.Play();
         timer = Random.Range(10, 25);
         player = GameObject.Find("Luis Adrian").transform;
@@ -67,5 +70,23 @@ public class Enemy_type_1 : MonoBehaviour
         {
             Destroy(this.gameObject, 0.25f);
         }
+    }
+
+    public int[] GenerateEnemyType()
+    {
+        int[] aux = new int[4];
+        int random = 0;
+
+        for(int i = 0; i < 4; i++)
+        {
+            random = Random.Range(0, 3);
+            if (random == 2)
+            {
+                random++;
+            }
+            aux[i] = random;
+        }
+
+        return aux;
     }
 }

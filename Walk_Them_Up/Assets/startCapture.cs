@@ -12,8 +12,8 @@ public class startCapture : MonoBehaviour
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject myCanvas;
-    public int tiempoEntreBolas = 1;
-    public int numGenerated = 5;
+    //public int tiempoEntreBolas = 1;
+    //public int numGenerated = 5;
 
     List<Vector3> positions = new List<Vector3>();
     
@@ -149,7 +149,8 @@ public class startCapture : MonoBehaviour
         StopCoroutine("generatorManager");
         fin = true;
         empezada = false;
-
+        empezada2 = false;
+        this.gameObject.SetActive(false);
     }
 
     //Generamos todas las posiciones donde se crearan las bolas

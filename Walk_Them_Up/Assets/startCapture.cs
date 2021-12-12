@@ -7,15 +7,22 @@ using UnityEditor;
 
 public class startCapture : MonoBehaviour
 {
-    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 6 };
+    public enum Type { TRIANGULO = 3, CUADRADO = 4, PENTAGONO = 5, CIRCULO = 8 };
 
     [SerializeField] GameObject capturePointsPF;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject myCanvas;
     public int tiempoEntreBolas = 1;
     public int numGenerated = 5;
+
     List<Vector3> positions = new List<Vector3>();
+    
     public Type[] enemyForm;
+    //public List<Type> enemyForm = new List<Type>();
+    //List<Type> enemyForm = new List<Type>();
+    //Type[] enemyForm;
+
+    SortedDictionary<int, List<Vector3>> pointsPositions = new SortedDictionary<int, List<Vector3>>();
 
     int minValueX = 5;
     int maxValueX = 5;
@@ -34,99 +41,99 @@ public class startCapture : MonoBehaviour
     bool empezada = false;
     bool empezada2 = false;
 
-    //geometry
+    [Header("Triangulo:")]
+    [Header("Magnitudes de las figuras geométricas:")]
+    [Tooltip("Magnitud en X del triangulo")]
+    public int tMX = 500; //triangleMagnitude on X 
+    [Tooltip("Magnitud en Y del triangulo")]
+    public int tMY = 500; //triangleMagnitude on Y
 
-    int tMX = 20; //triangleMagnitude on X 
-    int tMY = 20; //triangleMagnitude on Y
+    //square
+    [Header("Cuadrado:")]
+    [Tooltip("Magnitud de lado")]
+    public int sM = 800; //squareMagnitude
+
+    //circle
+    [Header("Circulo:")]
+    [Tooltip("Radio del circulo")]
+    public int radius = 500;
+    [Tooltip("Variacion maxima que se suma/resta al radio del circulo")]
+    public int randomVariation = 200;
+
 
     // Start is called before the first frame update
     void Start()
     {
 
-        positions = generatePositions(numGenerated);
+        //positions = generatePositions(numGenerated);
         //Debug.Log("1");
+        pointsPositions = generateGeometricPositions();
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //caso estandar
-        if (true)
+      
+            
+        if (!empezada2)
         {
-            //spawnear 5 con 1 seg de delay
 
-
-            if (!empezada2)
-            {
-
-                //Debug.Log("2");
-                StartCoroutine("generatorManager");
-
-            }
-
+            //Debug.Log("2");
+            //StartCoroutine("generatorManager");
+            StartCoroutine("generateCapturePoints");
         }
+
+        
 
     }
 
-    IEnumerator generatorManager()
-    {
-        empezada2 = true;
-        int i = 0;
-        while (i < 5)
-        {
-            if (!empezada)
-            {
-                Debug.Log("soy la rutina " + i);
-                StartCoroutine("generateCapturePoints");
-                yield return new WaitForSeconds(6);
-                i++;
-                positions = generatePositions(numGenerated);
-            }
-            Debug.Log("ahora espero a que " + i + " acabe");
-        }
-        //stopCorroutines();
-    }
+    //IEnumerator generatorManager()
+    //{
+    //    empezada2 = true;
+    //    int i = 0;
+    //    while (i < 4)
+    //    {
+    //        if (!empezada)
+    //        {
+    //            Debug.Log("soy la rutina " + i);
+    //            StartCoroutine("generateCapturePoints");
+    //            yield return new WaitForSeconds(3);
+    //            //pointsPositions = generateGeometricPositions();
+    //            i++;
+    //        }
+    //        Debug.Log("ahora espero a que " + i + " acabe");
+    //    }
+    //    stopCorroutines();
+    //}
 
 
     IEnumerator generateCapturePoints()
     {
 
-
-        for (int i = 0; i < numGenerated; i++)
+        empezada2 = true;
+        for (int i = 0; i < 4; i++)
         {
+            //Debug.Log("ahora empiezo: " + pointsPositions[i].Count);
+            int aux = i;
+            //GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
+            //List<Vector3> count = pointsPositions[i];
+            
 
-            //Instantiate(capturePointsPF, positions[i], Quaternion.identity);
-            GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
-            int aux = i + 1;
-            newButton.GetComponentInChildren<Text>().text = aux.ToString();
 
-            newButton.transform.SetParent(myCanvas.transform, false);
-
-            if (i < numGenerated - 1)
+            for (int j = 0; j < pointsPositions[i].Count; j++)
             {
-                gizmo = true;
-                //Gizmos.color = Color.yellow;
-                //Gizmos.DrawLine(positions[i], positions[i + 1]);
+                GameObject newButton = Instantiate(capturePointsPF, pointsPositions[i][j], Quaternion.identity) as GameObject;
+                aux = 1 + j;
+                newButton.GetComponentInChildren<Text>().text = aux.ToString();
+                
+                newButton.transform.SetParent(myCanvas.transform, false);
 
-                //Color c1 = Color.yellow;
-                //LineRenderer lineRenderer = new LineRenderer();
-                //lineRenderer.SetPosition(positions[i], positions[i + 1]);
-
-                //Debug.DrawRay(positions[i], positions[i + 1], Color.yellow, 2);
-
-                //LineRenderer lineRenderer = newButton.GetComponent<LineRenderer>();
-                //lineRenderer.SetPosition(i, positions[i]);
-                //lineRenderer.SetPosition(i, new Vector3(positions[i + 1].x, positions[i + 1].y, positions[i + 1].z));
-
-                //Handles.DrawLine(positions[i], positions[i + 1]);
+           
             }
-            else
-            {
-                gizmo = false;
-            }
-            yield return new WaitForSeconds(1);
-
+            yield return new WaitForSeconds(3);
+            //Debug.Log("Ahora Espero 10 secs");
         }
 
         empezada = true;
@@ -134,20 +141,12 @@ public class startCapture : MonoBehaviour
         stopCorroutines();
     }
 
-
-    void OnDrawGizmos()
-    {
-        if (gizmo)
-        {
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(positions[1], positions[0]);
-        }
-    }
+    
 
     public void stopCorroutines()
     {
         StopCoroutine("generateCapturePoints");
+        StopCoroutine("generatorManager");
         fin = true;
         empezada = false;
 
@@ -181,65 +180,93 @@ public class startCapture : MonoBehaviour
         return posiciones;
     }
 
-    public Vector3 generateRandomCenter()
+    public Vector3 generateRandomPoint(Vector2 aprox_vX, Vector2 aprox_vY)
     {
-        return new Vector3(Random.Range(-50, 50), Random.Range(-70, 70), 0);
+        //return new Vector3(Random.Range(-250, 50), Random.Range(-390, 90), 0);
+        return new Vector3(Random.Range(aprox_vX.x, aprox_vX.y), Random.Range(aprox_vY.x, aprox_vY.y), 0);
 
     }
 
     public SortedDictionary<int, List<Vector3>> generateGeometricPositions()
     {
-        int nPoints = (int)enemyForm[0] + (int)enemyForm[1] + (int)enemyForm[2] + (int)enemyForm[3];
+        //int nPoints = (int)enemyForm[0] + (int)enemyForm[1] + (int)enemyForm[2] + (int)enemyForm[3];
 
 
 
         SortedDictionary<int, List<Vector3>> generalPositions = new SortedDictionary<int, List<Vector3>>();
-        List<Vector3> specificPositions = new List<Vector3>();
+        //List<Vector3> specificPositions = new List<Vector3>();
         Vector3 aux;
 
 
         for (int i = 0; i < 4; i++)
         {
+            //specificPositions.Clear();
+            List<Vector3> specificPositions = new List<Vector3>();
             if (enemyForm[i] == Type.TRIANGULO)
             {
+                int auxDistX = Random.Range(tMX - 300, tMX + 300);
+                int auxDistY = Random.Range(tMY - 600, tMY + 100);
+
                 //generate triangle center
-                Vector3 center = generateRandomCenter();
+                Vector3 center = generateRandomPoint(new Vector2(-50,50),new Vector2(-390,-90));
 
                 //generate triangle vertex 1(up)
-                aux = new Vector3(0, tMX, 0);
+                aux = new Vector3(0, auxDistX, 0);
                 specificPositions.Add(center + aux);
 
                 //generate triangle vertex 2(left)
-                aux = new Vector3(-tMX, -(2 / 3) * tMY, 0);
+                aux = new Vector3(-1*auxDistX, -(2 / 3) * auxDistY, 0);
                 specificPositions.Add(center + aux);
 
                 //generate triangle vertex 3(right)
-                aux = new Vector3(tMX, -(2 / 3) * tMY, 0);
+                aux = new Vector3(auxDistX, -(2 / 3) * auxDistY, 0);
                 specificPositions.Add(center + aux);
+
 
                 //push it on the map
                 generalPositions.Add(i, specificPositions);
+                //clear aux stuff
+                //specificPositions.Clear();
             }
             else if (enemyForm[i] == Type.CUADRADO)
             {
-                for (int j = 0; j < (int)enemyForm[i]; j++)
-                {
+                int randomDistance = Random.Range(sM - 200, sM + 200);
+                //generate vertex 1 (up left corner)
+                aux = generateRandomPoint(new Vector2(-600, 300 - randomDistance), new Vector2(-1100 + randomDistance, 200 - randomDistance));//- and + random distance to kow it would fit on the screen
+                specificPositions.Add(aux);
 
-                }
+                //generate next 3 vertex
+                specificPositions.Add(aux + new Vector3(randomDistance, 0, 0));  // up right corner
+                specificPositions.Add(aux + new Vector3(0, -randomDistance, 0)); // down left corner
+                specificPositions.Add(aux + new Vector3(randomDistance, -randomDistance, 0)); // down right corner
+
+                //push it on the map
+                generalPositions.Add(i, specificPositions);
+                //clear aux stuff
+                //specificPositions.Clear();
+
             }
             else if (enemyForm[i] == Type.PENTAGONO)
             {
-                for (int j = 0; j < (int)enemyForm[i]; j++)
-                {
-
-                }
+                
             }
             else if (enemyForm[i] == Type.CIRCULO)
             {
-                for (int j = 0; j < (int)enemyForm[i]; j++)
-                {
+                int randomRadius = Random.Range(radius - randomVariation, radius + randomVariation);
 
-                }
+                //generate the 4 basic vertex (up, down, right, left)
+                specificPositions.Add(new Vector3(randomRadius, 0, 0));
+                specificPositions.Add(new Vector3(-randomRadius, 0, 0));
+                specificPositions.Add(new Vector3(0, randomRadius, 0));
+                specificPositions.Add(new Vector3(0, -randomRadius, 0));
+
+                //generate the 4 45º vertex
+                specificPositions.Add(new Vector3(randomRadius * Mathf.Sin(45), randomRadius * Mathf.Cos(45), 0));
+                specificPositions.Add(new Vector3((randomRadius * Mathf.Sin(45))*(-1), randomRadius * Mathf.Cos(45), 0));
+                specificPositions.Add(new Vector3(randomRadius * Mathf.Sin(45), (randomRadius * Mathf.Cos(45))*(-1), 0));
+                specificPositions.Add(new Vector3((randomRadius * Mathf.Sin(45))*(-1), (randomRadius * Mathf.Cos(45))*(-1), 0));
+
+                generalPositions.Add(i, specificPositions);
             }
             else
             {

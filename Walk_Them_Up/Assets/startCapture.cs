@@ -41,15 +41,21 @@ public class startCapture : MonoBehaviour
     bool empezada = false;
     bool empezada2 = false;
 
-    //geometry basic ranges
-    //triangle
-    int tMX = 500; //triangleMagnitude on X 
-    int tMY = 500; //triangleMagnitude on Y
-    //square
-    int sM = 800; //squareMagnitude
+    [Header("Triangulo:")]
+    [Header("Magnitudes de las figuras geométricas:")]
+    [Tooltip("Magnitud en X del triangulo")]
+    public int tMX = 500; //triangleMagnitude on X 
+    [Tooltip("Magnitud en Y del triangulo")]
+    public int tMY = 500; //triangleMagnitude on Y
 
+    //square
+    [Header("Cuadrado:")]
+    [Tooltip("Magnitud de lado")]
+    public int sM = 800; //squareMagnitude
     //circle
-    int radius = 500;
+    [Header("Circulo:")]
+    [Tooltip("Radio del circulo")]
+    public int radius = 500;
 
 
     // Start is called before the first frame update

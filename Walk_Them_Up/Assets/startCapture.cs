@@ -14,8 +14,14 @@ public class startCapture : MonoBehaviour
     [SerializeField] GameObject myCanvas;
     public int tiempoEntreBolas = 1;
     public int numGenerated = 5;
+
     List<Vector3> positions = new List<Vector3>();
+    
     public Type[] enemyForm;
+    //public List<Type> enemyForm = new List<Type>();
+    //List<Type> enemyForm = new List<Type>();
+    //Type[] enemyForm;
+
     SortedDictionary<int, List<Vector3>> pointsPositions = new SortedDictionary<int, List<Vector3>>();
 
     int minValueX = 5;
@@ -51,6 +57,15 @@ public class startCapture : MonoBehaviour
         //Debug.Log("1");
         pointsPositions = generateGeometricPositions();
 
+        //enemyForm.Add(Type.TRIANGULO);
+        //enemyForm.Add(Type.CUADRADO);
+        //enemyForm.Add(Type.CUADRADO);
+        //enemyForm.Add(Type.TRIANGULO);
+        //enemyForm[0] = Type.TRIANGULO;
+        //enemyForm[1] = Type.CUADRADO;
+        //enemyForm[2] = Type.TRIANGULO;
+        //enemyForm[3] = Type.TRIANGULO;
+
     }
 
     // Update is called once per frame
@@ -78,40 +93,39 @@ public class startCapture : MonoBehaviour
     {
         empezada2 = true;
         int i = 0;
-        while (i < 5)
+        while (i < 4)
         {
             if (!empezada)
             {
                 Debug.Log("soy la rutina " + i);
                 StartCoroutine("generateCapturePoints");
-                yield return new WaitForSeconds(6);
-                i++;
-                //positions = generatePositions(numGenerated);
+                yield return new WaitForSeconds(3);
                 pointsPositions = generateGeometricPositions();
+                i++;
             }
             Debug.Log("ahora espero a que " + i + " acabe");
         }
-        //stopCorroutines();
+        stopCorroutines();
     }
 
 
     IEnumerator generateCapturePoints()
     {
-        
 
+        
         for (int i = 0; i < 4; i++)
         {
             //Debug.Log("ahora empiezo: " + pointsPositions[i].Count);
             int aux = i;
             //GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
             //List<Vector3> count = pointsPositions[i];
-            
+            Debug.Log("Points en el count: " + pointsPositions[i].Count);
+
+
             for (int j = 0; j < pointsPositions[i].Count; j++)
-            //for (int j = 0; j < count.Count; j++)
-            //for (int j = 0; j < 4; j++)
             {
                 GameObject newButton = Instantiate(capturePointsPF, pointsPositions[i][j], Quaternion.identity) as GameObject;
-                aux = i + 1 + j;
+                aux = 1 + j;
                 newButton.GetComponentInChildren<Text>().text = aux.ToString();
                 
                 newButton.transform.SetParent(myCanvas.transform, false);
@@ -179,13 +193,14 @@ public class startCapture : MonoBehaviour
 
 
         SortedDictionary<int, List<Vector3>> generalPositions = new SortedDictionary<int, List<Vector3>>();
-        List<Vector3> specificPositions = new List<Vector3>();
+        //List<Vector3> specificPositions = new List<Vector3>();
         Vector3 aux;
 
 
         for (int i = 0; i < 4; i++)
         {
-            specificPositions.Clear();
+            //specificPositions.Clear();
+            List<Vector3> specificPositions = new List<Vector3>();
             if (enemyForm[i] == Type.TRIANGULO)
             {
                 int auxDistX = Random.Range(tMX - 300, tMX + 300);

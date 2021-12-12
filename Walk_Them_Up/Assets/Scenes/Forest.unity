@@ -2848,7 +2848,7 @@ MonoBehaviour:
   myCanvas: {fileID: 1979172025}
   tiempoEntreBolas: 1
   numGenerated: 5
-  enemyForm: 03000000040000000400000004000000
+  enemyForm: 03000000040000000300000004000000
 --- !u!1 &1369561707
 GameObject:
   m_ObjectHideFlags: 0

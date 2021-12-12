@@ -57,69 +57,57 @@ public class startCapture : MonoBehaviour
         //Debug.Log("1");
         pointsPositions = generateGeometricPositions();
 
-        //enemyForm.Add(Type.TRIANGULO);
-        //enemyForm.Add(Type.CUADRADO);
-        //enemyForm.Add(Type.CUADRADO);
-        //enemyForm.Add(Type.TRIANGULO);
-        //enemyForm[0] = Type.TRIANGULO;
-        //enemyForm[1] = Type.CUADRADO;
-        //enemyForm[2] = Type.TRIANGULO;
-        //enemyForm[3] = Type.TRIANGULO;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //caso estandar
-        if (true)
+      
+            
+        if (!empezada2)
         {
-            //spawnear 5 con 1 seg de delay
 
-
-            if (!empezada2)
-            {
-
-                //Debug.Log("2");
-                StartCoroutine("generatorManager");
-
-            }
-
+            //Debug.Log("2");
+            //StartCoroutine("generatorManager");
+            StartCoroutine("generateCapturePoints");
         }
+
+        
 
     }
 
-    IEnumerator generatorManager()
-    {
-        empezada2 = true;
-        int i = 0;
-        while (i < 4)
-        {
-            if (!empezada)
-            {
-                Debug.Log("soy la rutina " + i);
-                StartCoroutine("generateCapturePoints");
-                yield return new WaitForSeconds(3);
-                pointsPositions = generateGeometricPositions();
-                i++;
-            }
-            Debug.Log("ahora espero a que " + i + " acabe");
-        }
-        stopCorroutines();
-    }
+    //IEnumerator generatorManager()
+    //{
+    //    empezada2 = true;
+    //    int i = 0;
+    //    while (i < 4)
+    //    {
+    //        if (!empezada)
+    //        {
+    //            Debug.Log("soy la rutina " + i);
+    //            StartCoroutine("generateCapturePoints");
+    //            yield return new WaitForSeconds(3);
+    //            //pointsPositions = generateGeometricPositions();
+    //            i++;
+    //        }
+    //        Debug.Log("ahora espero a que " + i + " acabe");
+    //    }
+    //    stopCorroutines();
+    //}
 
 
     IEnumerator generateCapturePoints()
     {
 
-        
+        empezada2 = true;
         for (int i = 0; i < 4; i++)
         {
             //Debug.Log("ahora empiezo: " + pointsPositions[i].Count);
             int aux = i;
             //GameObject newButton = Instantiate(capturePointsPF, positions[i], Quaternion.identity) as GameObject;
             //List<Vector3> count = pointsPositions[i];
-            Debug.Log("Points en el count: " + pointsPositions[i].Count);
+            
 
 
             for (int j = 0; j < pointsPositions[i].Count; j++)
@@ -146,6 +134,7 @@ public class startCapture : MonoBehaviour
     public void stopCorroutines()
     {
         StopCoroutine("generateCapturePoints");
+        StopCoroutine("generatorManager");
         fin = true;
         empezada = false;
 

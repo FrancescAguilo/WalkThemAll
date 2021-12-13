@@ -19,7 +19,7 @@ public class Enemy_Generator : MonoBehaviour
         if (timer <0)
         {
 
-            Instantiate(enemy[Random.Range(0, enemy.Length)], new Vector3(this.transform.position.x + Random.Range(-50, 50), 1012, this.transform.position.z + Random.Range(-50, 50)), Quaternion.identity);
+            Instantiate(enemy[Random.Range(0, enemy.Length)], new Vector3(this.transform.position.x + Random.Range(-10, 10), 1012, this.transform.position.z + Random.Range(10,40)), Quaternion.identity);
             timer = Random.Range(5, 25);
         }
         else
